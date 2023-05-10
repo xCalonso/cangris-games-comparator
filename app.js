@@ -15,13 +15,19 @@
 'use strict';
 
 // [START gae_node_request_example]
+const bodyParser = require('body-parser')
 const express = require('express');
+const path = require('path');
+
 
 const app = express();
+var cors = require('cors');
 
-app.get('/', (req, res) => {
-  res.status(200).send('Hello, world! Los Cangris estamos readys!!!!!').end();
-});
+app.use(cors());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+  extended: false
+}));
 
 // Start the server
 const PORT = parseInt(process.env.PORT) || 8080;
@@ -30,5 +36,11 @@ app.listen(PORT, () => {
   console.log('Press Ctrl+C to quit.');
 });
 // [END gae_node_request_example]
+
+
+app.use(express.static('frontend/dist'))
+app.get('/', (req, res) => {
+  res.sendFile(__dirname + '/frontend/dist/index.html')
+});
 
 module.exports = app;
