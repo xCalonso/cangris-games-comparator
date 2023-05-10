@@ -7,9 +7,6 @@
     "name": "Google Inc."
   },
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint",
     "start": "node app.js",
     "test": "mocha --exit test/*.test.js"
   },
