@@ -1,5 +1,5 @@
 steps:
-- name: node:10.15.1
+- name: node:16.13.1
   entrypoint: npm
   args: ["run", "postinstall"]
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
