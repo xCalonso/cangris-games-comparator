@@ -12,6 +12,7 @@
     "test": "mocha --exit test/*.test.js"
   },
   "dependencies": {
+    "@apollo/server": "^4.7.1",
     "@vue/cli": "^5.0.8",
     "alias": "^0.0.5",
     "connect-history-api-fallback": "^1.6.0",
