@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@vue/cli": "^5.0.8",
+    "alias": "^0.0.5",
     "connect-history-api-fallback": "^1.6.0",
     "core-js": "^3.8.3",
     "cors": "^2.8.5",
