@@ -38,9 +38,9 @@ app.listen(PORT, () => {
 // [END gae_node_request_example]
 
 
-app.use(express.static('frontend/dist'))
+app.use(express.static('frontend/public'))
 app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/frontend/dist/index.html')
+  res.sendFile(__dirname + '/frontend/public/index.html')
 });
 
 module.exports = app;
