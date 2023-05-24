@@ -1,7 +1,6 @@
 {
   "name": "appengine-hello-world",
   "version": "0.0.2",
-  "private": true,
   "description": "Simple Hello World Node.js sample for Google App Engine Standard Environment.",
   "author": {
     "name": "Google Inc."
@@ -12,7 +11,6 @@
     "test": "mocha --exit test/*.test.js"
   },
   "dependencies": {
-    "@apollo/server": "^4.7.1",
     "@vue/cli": "^5.0.8",
     "alias": "^0.0.5",
     "connect-history-api-fallback": "^1.6.0",
@@ -20,6 +18,7 @@
     "cors": "^2.8.5",
     "express": "^4.17.2",
     "fund": "^1.0.0",
+    "graphql": "^16.6.0",
     "mysql": "^2.18.1",
     "npm": "^8.3.0",
     "vue": "^3.2.13"
@@ -48,25 +47,5 @@
       "parser": "@babel/eslint-parser"
     },
     "rules": {}
-  },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions",
-    "not dead",
-    "not ie 11"
-  ],
-  "_id": "appengine-hello-world@0.0.2",
-  "bugs": {
-    "url": "https://github.com/GoogleCloudPlatform/nodejs-docs-samples/issues"
-  },
-  "engines": {
-    "node": ">=14.0.0"
-  },
-  "homepage": "https://github.com/GoogleCloudPlatform/nodejs-docs-samples#readme",
-  "license": "Apache-2.0",
-  "readme": "ERROR: No README data found!",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/GoogleCloudPlatform/nodejs-docs-samples.git"
   }
 }
