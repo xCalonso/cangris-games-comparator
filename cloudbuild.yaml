@@ -1,8 +1,8 @@
 steps:
-- name: node:16.13.1
+- name: node:16.14
   entrypoint: npm
   args: ["install"]
-- name: node:16.13.1
+- name: node:16.14
   entrypoint: npm
   args: ["run", "build"]
 - name: "gcr.io/cloud-builders/gcloud"
