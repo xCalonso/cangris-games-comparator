@@ -8,6 +8,8 @@ const port = process.env.PORT || 8080
 const app = express()
 var cors = require('cors');
 
+const webscrap = require('./webscrap')
+
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
@@ -80,7 +82,23 @@ const getQuotes = async (nombre) => {
   return scraping;
 };
 
-app.get('/webscrap', async function(req, res) {
+app.get('/webscrap', function(req, res) {
+  const juego = req.query.juego || "Minecraft";
+  webscrap.obtenerInfoJuego(juego)
+  .then(infoJuego => {
+    if (infoJuego) {
+      res.send(infoJuego)
+      /*
+      console.log('Nombre:', infoJuego.nombre);
+      console.log('Precio:', infoJuego.precio);
+      console.log('URL de la imagen:', infoJuego.urlImagen);
+      */
+    }
+  })
+  .catch(error => {
+    console.error('Error:', error);
+  });
+  /*
   const juego = req.query.juego || "Minecraft";
   console.log('hola3')
   const juegos = await getQuotes(juego)
