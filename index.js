@@ -83,7 +83,11 @@ const getQuotes = async (nombre) => {
 app.get('/webscrap', async function(req, res) {
   const juego = req.query.juego || "Minecraft";
   console.log('hola3')
-  const juegos = new Promise((resolve,reject) =>{
+  const juegos = await getQuotes(juego)
+  console.log(juegos)
+  res.send(juegos)
+  /*
+  new Promise((resolve,reject) =>{
     getQuotes(juego)
     .then(data =>{
       resolve(data)
@@ -94,10 +98,11 @@ app.get('/webscrap', async function(req, res) {
   Promise.all([juegos])
   .then(data => {
     //console.log(data)
-    res.send(data[0])
+    //res.send(data[0])
     //res.render('index', { data: { juegos: data[0] }})
   })
   .catch(err => res.status(500).send(err))
+  */
 })
 
 app.listen(port, () => {
