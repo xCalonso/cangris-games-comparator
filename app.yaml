@@ -22,8 +22,5 @@ handlers:
   - url: /.*
     static_files: frontend/build/index.html
     upload: frontend/build/index.html
-    
-  - url: /webscraping
-    script: auto
 
 # [END gae_quickstart_yaml]
