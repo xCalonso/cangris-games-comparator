@@ -18,26 +18,21 @@ app.use(bodyParser.urlencoded({
 
 app.use(express.static('frontend/dist'))
 app.get('/', function(req, res) {
-  console.log('hola')
   res.sendFile(__dirname + 'frontend/dist/index.html')
 });
 
-app.get('/webscrap', function(req, res) {
-  const juego = req.query.juego || "Minecraft";
+app.get('/webscrap/:n_juego', function(req, res) {
+  const juego = req.params.n_juego;
+  console.log(juego)
   webscrap.obtenerInfoJuego(juego)
-  .then(infoJuego => {
-    if (infoJuego) {
-      res.send(infoJuego)
-      /*
-      console.log('Nombre:', infoJuego.nombre);
-      console.log('Precio:', infoJuego.precio);
-      console.log('URL de la imagen:', infoJuego.urlImagen);
-      */
-    }
-  })
-  .catch(error => {
-    console.error('Error:', error);
-  });
+    .then(infoJuego => {
+      if (infoJuego) {
+        res.send(infoJuego)
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
   /*
   const juego = req.query.juego || "Minecraft";
   console.log('hola3')
