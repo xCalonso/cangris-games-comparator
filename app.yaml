@@ -13,14 +13,21 @@
 
 # [START gae_quickstart_yaml]
 runtime: nodejs18
+#env: standard
+#instance_class: F1
+#automatic_scaling:
+#  min_idle_instances: 1
+#  max_idle_instances: automatic
+#  min_pending_latency: automatic
+#  max_pending_latency: automatic
 handlers:
   # Serve all static files with url ending with a file extension
   - url: /(.*\..+)$
-    static_files: frontend/build/\1
-    upload: frontend/build/(.*\..+)$
+    static_files: frontend/dist/\1
+    upload: frontend/dist/(.*\..+)$
   # Catch all handler to index.html
   - url: /.*
-    static_files: frontend/build/index.html
-    upload: frontend/build/index.html
+    static_files: frontend/dist/index.html
+    upload: frontend/dist/index.html
 
 # [END gae_quickstart_yaml]
