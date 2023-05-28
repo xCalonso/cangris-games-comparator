@@ -85,6 +85,7 @@ const webscrapIG = async (nombre) => {
   return {name, price, url};
 };
 
+
 const steamAPI = async (nombreJuego) => {
   try {
     const listaUrl = `https://api.steampowered.com/ISteamApps/GetAppList/v2/?key=${apiKey}&format=json`;
@@ -95,12 +96,16 @@ const steamAPI = async (nombreJuego) => {
 
     //console.log(juegos);
 
-    const nombresJuegos=juegos.map(juego => juego.name);
+    const nombresJuegos=juegos.map(juego => juego.name.toLowerCase());
+    
+    //console.log(nombresJuegos);
 
-    const mejorMatch = stringSimilarity.findBestMatch(nombreJuego, nombresJuegos);
+    const mejorMatch = stringSimilarity.findBestMatch(nombreJuego.toLowerCase(), nombresJuegos);
 
     if (mejorMatch.bestMatch.rating > 0) {
-      const MejorResultado= juegos.find(juego=>juego.name===mejorMatch.bestMatch.target);
+      //console.log(mejorMatch.bestMatch);
+      const MejorResultado= juegos.find(juego=>juego.name.toLowerCase()===mejorMatch.bestMatch.target);
+      //console.log(MejorResultado);
       gameId= MejorResultado.appid.toString();
     } else {
       console.error('No se encontró el juego con el nombre especificado');
@@ -110,29 +115,30 @@ const steamAPI = async (nombreJuego) => {
     console.error('Error al obtener el appID:', error);
   }
 
-    const apiUrl= `http://store.steampowered.com/api/appdetails?appids=${gameId}`; 
+  const apiUrl= `http://store.steampowered.com/api/appdetails?appids=${gameId}`; 
     
-    const response2 = await axios.get(apiUrl);
+  const response2 = await axios.get(apiUrl);
     
-    const datos = response2.data;
+  const datos = response2.data;
 
+  //console.log(datos);
 
-    //console.log(datos);
+  const nombre= datos[gameId].data.name;
+  const urlImagen= datos[gameId].data.header_image;
+  precio = datos[gameId].data.price_overview;
+  if(precio==undefined){
+    precio= 'Juego actualmente fuera de Stock';
+  }
+  else{
+    precio = precio.final_formatted;
+  }
+  const urlTienda= `https://store.steampowered.com/app/${gameId}`;
 
-    const nombre= datos[gameId].data.name;
-    const urlImagen= datos[gameId].data.header_image;
-     precio= datos[gameId].data.price_overview;
-    if(precio==undefined){
-         precio= 'Juego actualmente fuera de Stock';
-    }
-    else{
-          precio = precio.final_formatted;
-    }
-    const urlTienda= `https://store.steampowered.com/app/${gameId}`;
+  //console.log(precio);
 
-    //console.log(precio);
-
-    return{nombre, precio, urlImagen, urlTienda};
+  return{nombre, precio, urlImagen, urlTienda};
 }
+
+//console.log(steamAPI("elden ring"))
 
 module.exports = {webscrapG2A, webscrapIG, steamAPI}
