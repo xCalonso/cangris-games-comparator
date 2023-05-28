@@ -60,6 +60,7 @@ const webscrapG2A = async (nombre) => {
 const webscrapIG = async (nombre) => {
   const browser = await puppeteer.launch({
     headless: "new",
+    ignoreDefaultArgs: ['--disable-extensions'],
     //defaultViewport: null,
     args:[
       '--no-sandbox'
@@ -109,12 +110,9 @@ const steamAPI = async (nombreJuego) => {
     console.error('Error al obtener el appID:', error);
   }
 
-    const apiUrl= `http://store.steampowered.com/api/appdetails?appids=${gameId}`;
-    
+    const apiUrl= `http://store.steampowered.com/api/appdetails?appids=${gameId}`; 
     
     const response2 = await axios.get(apiUrl);
-
-
     
     const datos = response2.data;
 
