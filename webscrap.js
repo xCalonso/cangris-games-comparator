@@ -1,15 +1,10 @@
-//const SteamAPI = require('steam-webapi');
-//const steam = new SteamAPI('2A263491854331441324FA092F40370E');
-
-const SteamAPI = require('steamapi');
-const steam = new SteamAPI('2A263491854331441324FA092F40370E');
 const stringSimilarity = require('string-similarity');
-const puppeteer = require('puppeteer')
+const puppeteer = require('puppeteer');
+const axios = require('axios');
 
-const getQuotes = async (nombre) => {
-  // Start a Puppeteer session with:
-  // - a visible browser (`headless: false` - easier to debug because you'll see the browser in action)
-  // - no default viewport (`defaultViewport: null` - website page will in full width and height)
+const apiKey = '2A263491854331441324FA092F40370E';
+
+const webscrapG2A = async (nombre) => {
   const browser = await puppeteer.launch({
     headless: "new",
     //defaultViewport: null,
@@ -17,19 +12,11 @@ const getQuotes = async (nombre) => {
       '--no-sandbox'
     ]
   });
-  console.log('hola2')
 
-  // Open a new page
   const page = await browser.newPage();
 
-  // On this new page:
-  // - open the "http://quotes.toscrape.com/" website
-  // - wait until the dom content is loaded (HTML is ready)
-  await page.goto("https://www.g2a.com/es/", {
-    waitUntil: "domcontentloaded",
-  });
+  await page.goto("https://www.g2a.com/es/", {waitUntil: "domcontentloaded"});
 
-  // Obtiene el HTML de la pagina actual
   const source = await page.content({"waitUntil": "domcontentloaded"});
 
   await page.waitForSelector('.indexes__InputContainer-sc-1n30rfz-154 input', {visible: true});
@@ -39,11 +26,18 @@ const getQuotes = async (nombre) => {
     page.keyboard.press("Enter"),
   ]);
 
-  // Get page data
   const scraping = await page.evaluate(() => {
-    // Fetch the first element with class "quote"
-    const divs = document.querySelectorAll(".sc-csTbgd.kglWtV");
+    const div_juego = document.querySelector(".sc-dFRpbK.jtOUCg");
+    const div_precio = document.querySelector(".sc-hBMUJo.bRGwob");
+
+    const nombre = div_juego.querySelector("a").innerText;
+    const url = div_juego.querySelector("a").href;
+    const precio_act = div_precio.querySelector("span").innerText;
+
+    return {nombre, url, precio_act};
     
+    /*
+    const divs = document.querySelectorAll(".sc-csTbgd.kglWtV");
     return Array.from(divs).map((d) => {
         const div_juego = d.querySelector(".sc-dFRpbK.jtOUCg");
         const div_precio = d.querySelector(".sc-hBMUJo.bRGwob");
@@ -54,58 +48,93 @@ const getQuotes = async (nombre) => {
         
         return {nombre, url, precio_act};
     })
+    */
 
   });
-
-  // Display the source
   //console.log(scraping);
 
-  // Close the browser
   await browser.close();
   return scraping;
 };
 
-async function obtenerInfoJuego(nombreJuego) {
-  try {
+const webscrapIG = async (nombre) => {
+  const browser = await puppeteer.launch({
+    headless: "new",
+    //defaultViewport: null,
+    args:[
+      '--no-sandbox'
+    ]
+  });
+  const page = await browser.newPage();
+    
+  await page.goto('https://www.instant-gaming.com/es/', { waitUntil: 'networkidle0' });
 
-    const juegos = (await steam.getAppList()); // Obtiene la lista de juegos
+  await page.click('input[class="search-input"]');
+  await page.type('input[class="search-input"]', nombre);
+  await page.waitForNavigation();
+  
+  const name = await page.$eval('.text', el => el.textContent);
+  const price = await page.$$eval('.price', el => el[1].textContent.trim());
+  const url = await page.$eval('.cover', el=> el.href);
+  //const discount = await page.$eval('.discount', el => el.textContent.trim());
+
+  //console.log(`Nombre: ${name}\nPrecio: ${price}\nDescuento: ${discount}`);
+
+  await browser.close();
+  return {name, price, url};
+};
+
+const steamAPI = async (nombreJuego) => {
+  try {
+    const listaUrl = `https://api.steampowered.com/ISteamApps/GetAppList/v2/?key=${apiKey}&format=json`;
+
+    const response1 = await axios.get(listaUrl);
+
+    const juegos =response1.data.applist.apps;
+
+    //console.log(juegos);
+
     const nombresJuegos=juegos.map(juego => juego.name);
 
     const mejorMatch = stringSimilarity.findBestMatch(nombreJuego, nombresJuegos);
 
-    // Busca el juego por nombre
-    //const juegoEncontrado = juegos.find(juego => juego.name.toLowerCase() === nombreJuego.toLowerCase());
-
     if (mejorMatch.bestMatch.rating > 0) {
       const MejorResultado= juegos.find(juego=>juego.name===mejorMatch.bestMatch.target);
-      appID= MejorResultado.appid.toString();
-      //console.log(appID);
-      //appID= juego_appID.appid.toString();
+      gameId= MejorResultado.appid.toString();
     } else {
       console.error('No se encontró el juego con el nombre especificado');
       return null;
     }
   } catch (error) {
     console.error('Error al obtener el appID:', error);
-    return null;
   }
-    const game = await steam.getGameDetails(appID);
-    const nombre = game.name;
-    if(game.price_overview===undefined){
-        const precio= 'Juego actualmente fuera de Stock';
+
+    const apiUrl= `http://store.steampowered.com/api/appdetails?appids=${gameId}`;
+    
+    
+    const response2 = await axios.get(apiUrl);
+
+
+    
+    const datos = response2.data;
+
+
+    //console.log(datos);
+
+    const nombre= datos[gameId].data.name;
+    const urlImagen= datos[gameId].data.header_image;
+     precio= datos[gameId].data.price_overview;
+    if(precio==undefined){
+         precio= 'Juego actualmente fuera de Stock';
     }
     else{
-          precio = game.price_overview.final_formatted;
+          precio = precio.final_formatted;
     }
-    //console.log(nombre);
-   
-    const urlImagen = game.header_image;
-    const urlStore = game.url;
-    return { nombre, precio, urlImagen };
-//catch (error) {
-  //  console.error('Error al obtener la información del juego:', error);
-    //return null;
-  //}
+    const urlTienda= `https://store.steampowered.com/app/${gameId}`;
+
+    //console.log(precio);
+
+    return{nombre, precio, urlImagen, urlTienda};
 }
 
-module.exports = {obtenerInfoJuego}
+module.exports = {webscrapG2A, webscrapIG, steamAPI}

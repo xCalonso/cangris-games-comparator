@@ -24,7 +24,8 @@ app.get('/', function(req, res) {
 app.get('/webscrap/:n_juego', function(req, res) {
   const juego = req.params.n_juego;
   console.log(juego)
-  webscrap.obtenerInfoJuego(juego)
+  /*
+  webscrap.webscrapIG(juego)
     .then(infoJuego => {
       if (infoJuego) {
         res.send(infoJuego)
@@ -33,29 +34,39 @@ app.get('/webscrap/:n_juego', function(req, res) {
     .catch(error => {
       console.error('Error:', error);
     });
-  /*
-  const juego = req.query.juego || "Minecraft";
-  console.log('hola3')
-  const juegos = await getQuotes(juego)
-  console.log(juegos)
-  res.send(juegos)
-  /*
-  new Promise((resolve,reject) =>{
-    getQuotes(juego)
+  */
+  const steam = new Promise((resolve,reject) =>{
+    webscrap.steamAPI(juego)
     .then(data =>{
       resolve(data)
     })
     .catch(err => reject(err));
   })
   
-  Promise.all([juegos])
+  const IG = new Promise((resolve,reject) =>{
+    webscrap.webscrapIG(juego)
+    .then(data =>{
+      resolve(data)
+    })
+    .catch(err => reject(err));
+  })
+  
+  const G2A = new Promise((resolve,reject) =>{
+    webscrap.webscrapG2A(juego)
+    .then(data =>{
+      resolve(data)
+    })
+    .catch(err => reject(err));
+  })
+  
+  Promise.all([steam, IG, G2A])
   .then(data => {
-    //console.log(data)
-    //res.send(data[0])
+    console.log(data)
+    res.send(data)
     //res.render('index', { data: { juegos: data[0] }})
   })
   .catch(err => res.status(500).send(err))
-  */
+  
 })
 
 app.listen(port, () => {
