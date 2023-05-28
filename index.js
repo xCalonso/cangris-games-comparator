@@ -24,7 +24,7 @@ app.get('/', function(req, res) {
 app.get('/webscrap/:n_juego', function(req, res) {
   const juego = req.params.n_juego;
   console.log(juego)
-  
+  /*
   webscrap.steamAPI(juego)
     .then(infoJuego => {
       if (infoJuego) {
@@ -34,7 +34,7 @@ app.get('/webscrap/:n_juego', function(req, res) {
     .catch(error => {
       console.error('Error:', error);
     });
-  /*
+  */
   const steam = new Promise((resolve,reject) =>{
     webscrap.steamAPI(juego)
     .then(data =>{
@@ -66,16 +66,12 @@ app.get('/webscrap/:n_juego', function(req, res) {
     //res.render('index', { data: { juegos: data[0] }})
   })
   .catch(err => res.status(500).send(err))
-  */
 })
 
 app.listen(port, () => {
   console.log(`Backend funcionando en http://localhost:${port}`)
 })
 
-
 process.on('error', function (err) {
   console.log(err);
 });
-
-
