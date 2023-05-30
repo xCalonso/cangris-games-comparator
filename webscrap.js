@@ -27,7 +27,7 @@ const webscrapG2A = async (juego) => {
   
   const scraping = {nombre, precio, url};
 
-  console.log(scraping);
+  //console.log(scraping);
 
   await browser.close();
   return scraping;
