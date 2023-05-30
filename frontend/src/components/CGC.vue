@@ -17,40 +17,34 @@
 
     <div v-show="submenu === 'inicio'">
       <h1>Bienvenido a la página de inicio</h1>
-
       <h3>Cangris Games Comparator es una aplicación que compara los precios entre tres de las tiendas de Videojuegos más importantes</h3>
       
-      
+      <v-img :width="300" aspect-ratio="16/9" cover src="https://www.g2a.com/static/assets/images/logo_g2a_white.svg"></v-img>
+      <v-img :width="300" aspect-ratio="16/9" cover src="https://store.akamai.steamstatic.com/public/shared/images/header/logo_steam.svg?t=962016"></v-img>
+      <v-img :width="300" aspect-ratio="16/9" cover src="https://cdn.freebiesupply.com/logos/thumbs/2x/instant-gaming-1-logo.png"></v-img>
       <h2>Proyecto realizado por Carlos de Alonso Andrés y Hugo Antonio Teruel</h2>
       <h3>Ingeniería de Sistemas de Información 2023 Universidad de Granada</h3>
-      
     </div>
 
     <div v-show="submenu === 'busqueda'">
-      
       <h1>Página de búsqueda</h1>
       <div style="max-width: 900px; margin: 0 auto">
       <v-text-field :rules="[field_not_empty]" v-model="n_juego" placeholder="Nombre del Juego" outlined required></v-text-field>
       </div>
       <v-btn @click="webscrap" color="secondary" dark x-large outlined :style="{left: '50%', transform:'translateX(-50%)'}">Buscar</v-btn>
       <h2 v-if="!!juego">{{ juego }}</h2>
-      
     </div>
 
     <div v-show="submenu === 'manual'">
       <h1>Página de manual</h1>
-      
     </div>
-
-   
-
   </div>
 </template>
 
 <script>
 import axios from 'axios'
-//const url = 'http://localhost:8080'
-const url = 'https://cgc-cangris-games-comparator.nw.r.appspot.com'
+const url = 'http://localhost:8080'
+//const url = 'https://cgc-cangris-games-comparator.nw.r.appspot.com'
 
 export default {
   name: 'CGC',
