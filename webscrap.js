@@ -1,4 +1,5 @@
 const stringSimilarity = require('string-similarity');
+const querystring = require('querystring');
 const puppeteer = require('puppeteer');
 const axios = require('axios');
 
@@ -7,57 +8,32 @@ const apiKey = '2A263491854331441324FA092F40370E';
 const webscrapG2A = async (juego) => {
   const browser = await puppeteer.launch({
     headless: "new",
+    ignoreDefaultArgs: ['--disable-extensions'],
     //defaultViewport: null,
     args:[
       '--no-sandbox'
     ]
   });
+  
+  const juego_query = querystring.stringify(juego) 
 
   const page = await browser.newPage();
 
-  await page.goto("https://www.g2a.com/es/", {waitUntil: "domcontentloaded"});
+  await page.goto(`https://www.g2a.com/es/search?query=${juego}`, {waitUntil: "domcontentloaded"});
 
-  const source = await page.content({"waitUntil": "domcontentloaded"});
+  const nombre = await page.$eval('.sc-dFRpbK.jtOUCg a', el => el.textContent);
+  const url = await page.$eval('.sc-dFRpbK.jtOUCg a', el => el.href);
+  const precio = await page.$eval('.sc-hBMUJo.bRGwob span', el => el.textContent);
+  
+  const scraping = {nombre, precio, url};
 
-  await page.waitForSelector('.indexes__InputContainer-sc-1n30rfz-154 input', {visible: true});
-  await page.type('.indexes__InputContainer-sc-1n30rfz-154 input', juego);
-  await Promise.all([
-    page.waitForNavigation({waitUntil: "domcontentloaded"}),
-    page.keyboard.press("Enter"),
-  ]);
-
-  const scraping = await page.evaluate(() => {
-    const div_juego = document.querySelector(".sc-dFRpbK.jtOUCg");
-    const div_precio = document.querySelector(".sc-hBMUJo.bRGwob");
-
-    const nombre = div_juego.querySelector("a").innerText;
-    const url = div_juego.querySelector("a").href;
-    const precio_act = div_precio.querySelector("span").innerText;
-
-    return {nombre, url, precio_act};
-    
-    /*
-    const divs = document.querySelectorAll(".sc-csTbgd.kglWtV");
-    return Array.from(divs).map((d) => {
-        const div_juego = d.querySelector(".sc-dFRpbK.jtOUCg");
-        const div_precio = d.querySelector(".sc-hBMUJo.bRGwob");
-        
-        const nombre = div_juego.querySelector("a").innerText;
-        const url = div_juego.querySelector("a").href;
-        const precio_act = div_precio.querySelector("span").innerText;
-        
-        return {nombre, url, precio_act};
-    })
-    */
-
-  });
-  //console.log(scraping);
+  console.log(scraping);
 
   await browser.close();
   return scraping;
 };
 
-const webscrapIG = async (nombre) => {
+const webscrapIG = async (juego) => {
   const browser = await puppeteer.launch({
     headless: "new",
     ignoreDefaultArgs: ['--disable-extensions'],
@@ -68,21 +44,21 @@ const webscrapIG = async (nombre) => {
   });
   const page = await browser.newPage();
     
-  await page.goto('https://www.instant-gaming.com/es/', { waitUntil: 'networkidle0' });
+  await page.goto('https://www.instant-gaming.com/es/', { waitUntil: 'domcontentloaded' });
 
   await page.click('input[class="search-input"]');
-  await page.type('input[class="search-input"]', nombre);
+  await page.type('input[class="search-input"]', juego);
   await page.waitForNavigation();
   
-  const name = await page.$eval('.text', el => el.textContent);
-  const price = await page.$$eval('.price', el => el[1].textContent.trim());
+  const nombre = await page.$eval('.text', el => el.textContent);
+  const precio = await page.$$eval('.price', el => el[1].textContent.trim());
   const url = await page.$eval('.cover', el=> el.href);
   //const discount = await page.$eval('.discount', el => el.textContent.trim());
 
   //console.log(`Nombre: ${name}\nPrecio: ${price}\nDescuento: ${discount}`);
 
   await browser.close();
-  return {name, price, url};
+  return {nombre, precio, url};
 };
 
 
@@ -132,11 +108,11 @@ const steamAPI = async (nombreJuego) => {
   else{
     precio = precio.final_formatted;
   }
-  const urlTienda= `https://store.steampowered.com/app/${gameId}`;
+  const url = `https://store.steampowered.com/app/${gameId}`;
 
   //console.log(precio);
 
-  return{nombre, precio, urlImagen, urlTienda};
+  return{nombre, precio, url, urlImagen};
 }
 
 //console.log(steamAPI("elden ring"))

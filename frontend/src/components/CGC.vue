@@ -35,7 +35,7 @@
       <v-text-field :rules="[field_not_empty]" v-model="n_juego" placeholder="Nombre del Juego" outlined required></v-text-field>
       </div>
       <v-btn @click="webscrap" color="secondary" dark x-large outlined :style="{left: '50%', transform:'translateX(-50%)'}">prueba</v-btn>
-      <h2>{{ juego}}</h2>
+      <h2>{{ juego }}</h2>
       
     </div>
 
