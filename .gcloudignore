@@ -15,5 +15,6 @@
 
 # Node.js dependencies:
 node_modules/
-aux/
 .cache/
+frontend/node_modules/
+frontend/dist/

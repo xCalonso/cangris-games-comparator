@@ -27,8 +27,13 @@ resources:
   memory_gb: 1
   disk_size_gb: 20
 handlers:
-  - url: /(.*\..+)$ 
+  # Serve all static files with url ending with a file extension
+  - url: /(.*\..+)$
     static_files: frontend/dist/\1
     upload: frontend/dist/(.*\..+)$
+  # Catch all handler to index.html
+  - url: /.*
+    static_files: frontend/dist/index.html
+    upload: frontend/dist/index.html
 
 # [END gae_quickstart_yaml]

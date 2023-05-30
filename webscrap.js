@@ -100,7 +100,7 @@ const steamAPI = async (nombreJuego) => {
   //console.log(datos);
 
   const nombre= datos[gameId].data.name;
-  const urlImagen= datos[gameId].data.header_image;
+  const urlImagen= datos[gameId].data.header_image.split('?')[0];
   precio = datos[gameId].data.price_overview;
   if(precio==undefined){
     precio= 'Juego actualmente fuera de Stock';

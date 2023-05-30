@@ -25,11 +25,11 @@ app.get('/webscrap/:n_juego', async function(req, res) {
   const juego = req.params.n_juego;
   console.log(juego)
   const steam = await webscrap.steamAPI(juego)
-  const G2A = await webscrap.webscrapG2A(juego)
-  const IG = await webscrap.webscrapIG(juego)
+  //const G2A = await webscrap.webscrapG2A(juego)
+  //const IG = await webscrap.webscrapIG(juego)
   
   //res.send(IG)
-  res.send([steam, G2A, IG]);
+  res.send([steam]);
 })
 
 app.listen(port, () => {
