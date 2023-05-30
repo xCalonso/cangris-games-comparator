@@ -21,9 +21,15 @@ app.get('/', function(req, res) {
   res.sendFile(__dirname + 'frontend/dist/index.html')
 });
 
-app.get('/webscrap/:n_juego', function(req, res) {
+app.get('/webscrap/:n_juego', async function(req, res) {
   const juego = req.params.n_juego;
   console.log(juego)
+  const steam = await webscrap.steamAPI(juego)
+  const G2A = await webscrap.webscrapG2A(juego)
+  const IG = await webscrap.webscrapIG(juego)
+  
+  //res.send(IG)
+  res.send([steam, IG]);
   /*
   webscrap.steamAPI(juego)
     .then(infoJuego => {
@@ -35,6 +41,7 @@ app.get('/webscrap/:n_juego', function(req, res) {
       console.error('Error:', error);
     });
   */
+  /*
   const steam = new Promise((resolve,reject) =>{
     webscrap.steamAPI(juego)
     .then(data =>{
@@ -66,6 +73,7 @@ app.get('/webscrap/:n_juego', function(req, res) {
     //res.render('index', { data: { juegos: data[0] }})
   })
   .catch(err => res.status(500).send(err))
+  */
 })
 
 app.listen(port, () => {

@@ -12,10 +12,10 @@
 # limitations under the License.
 
 # [START gae_quickstart_yaml]
-runtime: nodejs18
-env: standard
+runtime: nodejs
+env: flex
 runtime_config:
-  operating_system: ubuntu22
+  operating_system: ubuntu18
 # This sample incurs costs to run on the App Engine flexible environment.
 # The settings below are to reduce costs during testing and are not appropriate
 # for production use. For more information, see:
@@ -25,7 +25,7 @@ manual_scaling:
 resources:
   cpu: 1
   memory_gb: 1
-  disk_size_gb: 10
+  disk_size_gb: 20
 handlers:
   # Serve all static files with url ending with a file extension
   - url: /(.*\..+)$

@@ -4,7 +4,7 @@ const axios = require('axios');
 
 const apiKey = '2A263491854331441324FA092F40370E';
 
-const webscrapG2A = async (nombre) => {
+const webscrapG2A = async (juego) => {
   const browser = await puppeteer.launch({
     headless: "new",
     //defaultViewport: null,
@@ -20,7 +20,7 @@ const webscrapG2A = async (nombre) => {
   const source = await page.content({"waitUntil": "domcontentloaded"});
 
   await page.waitForSelector('.indexes__InputContainer-sc-1n30rfz-154 input', {visible: true});
-  await page.type('.indexes__InputContainer-sc-1n30rfz-154 input', nombre);
+  await page.type('.indexes__InputContainer-sc-1n30rfz-154 input', juego);
   await Promise.all([
     page.waitForNavigation({waitUntil: "domcontentloaded"}),
     page.keyboard.press("Enter"),
