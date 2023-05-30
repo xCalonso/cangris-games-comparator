@@ -7,9 +7,9 @@
         <v-spacer></v-spacer>
         <nav>
           <ul>
-            <li @click="menu('inicio')" >Inicio</li>
-            <li @click="menu('busqueda')">Página de búsqueda</li>
-            <li @click="menu('manual')">Página de manual</li>
+            <li @click="menu('inicio')"><v-icon @click="menu('inicio')">mdi-home</v-icon>Inicio</li>
+            <li @click="menu('busqueda')"><v-icon @click="menu('busqueda')">mdi-search-web</v-icon>Página de búsqueda</li>
+            <li @click="menu('manual')"><v-icon @click="menu('manual')">mdi-book-open-outline</v-icon>Página de manual</li>
           </ul>
         </nav>
       </v-app-bar>
@@ -20,9 +20,9 @@
 
       <h3>Cangris Games Comparator es una aplicación que compara los precios entre tres de las tiendas de Videojuegos más importantes</h3>
       
-      <img src="https://www.g2a.com/static/assets/images/logo_g2a_white.svg">
-      <img src ="https://store.akamai.steamstatic.com/public/shared/images/header/logo_steam.svg?t=962016">
-      <img src="https://cdn.freebiesupply.com/logos/thumbs/2x/instant-gaming-1-logo.png">
+      <v-img :width="300" aspect-ratio="16/9" cover src="https://www.g2a.com/static/assets/images/logo_g2a_white.svg"></v-img>
+      <v-img :width="300" aspect-ratio="16/9" cover src ="https://store.akamai.steamstatic.com/public/shared/images/header/logo_steam.svg?t=962016"></v-img>
+      <v-img :width="300" aspect-ratio="16/9" cover src="https://cdn.freebiesupply.com/logos/thumbs/2x/instant-gaming-1-logo.png"></v-img>
       <h2>Proyecto realizado por Carlos de Alonso Andrés y Hugo Antonio Teruel</h2>
       <h3>Ingeniería de Sistemas de Información 2023 Universidad de Granada</h3>
       
