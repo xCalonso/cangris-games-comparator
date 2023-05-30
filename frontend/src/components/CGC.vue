@@ -51,8 +51,8 @@
 
 <script>
 import axios from 'axios'
-const url = 'http://localhost:8080'
-//const url = 'https://cgc-cangris-games-comparator.nw.r.appspot.com'
+//const url = 'http://localhost:8080'
+const url = 'https://cgc-cangris-games-comparator.nw.r.appspot.com'
 
 export default {
   name: 'CGC',
