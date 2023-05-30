@@ -9,16 +9,20 @@
           <ul>
             <li @click="menu('inicio')" style="cursor: pointer"><v-icon @click="menu('inicio')">mdi-home</v-icon>Inicio</li>
             <li @click="menu('busqueda')" style="cursor: pointer"><v-icon @click="menu('busqueda')">mdi-search-web</v-icon>Página de búsqueda</li>
-            <li @click="menu('manual')" style="cursor: pointer"><v-icon @click="menu('manual')">mdi-book-open-outline</v-icon>Página de manual</li>
+            <li @click="menu('manual')" style="cursor: pointer"><v-icon @click="menu('manual')">mdi-book-open-outline</v-icon> Página de manual</li>
           </ul>
         </nav>
       </v-app-bar>
     </header>
 
     <div v-show="submenu === 'inicio'">
-      <h1>Bienvenido a la página de inicio</h1>
-      <h3>Cangris Games Comparator es una aplicación que compara los precios entre tres de las tiendas de videojuegos más importantes</h3>
-
+      <div class="display-2 font-weight-bold mt-6 mb-2" style="display: flex; justify-content: center; align-items: center;">Bienvenido a CGC</div>
+      <div style="width: 500">
+        <div class="display-1 font-weight-bold mt-6 mb-2" style="display: flex; justify-content: center; align-items: center;">
+          CGC - Cangris Games Comparator es una aplicación que compara los precios entre tres de las tiendas de videojuegos más importantes
+        </div>
+      </div>
+      
       <br><br>
 
       <div style="display: flex; justify-content: space-between; align-items: center;">
@@ -29,7 +33,7 @@
     </div>
 
     <div v-show="submenu === 'busqueda'">
-      <h1>Página de búsqueda</h1>
+      <div class="display-2 font-weight-bold mt-6 mb-2" style="display: flex; justify-content: center; align-items: center;">Página de búsqueda</div>
       <div style="max-width: 900px; margin: 0 auto">
         <v-text-field :rules="[field_not_empty]" v-model="n_juego" placeholder="Nombre del Juego" outlined required></v-text-field>
       </div>
@@ -84,7 +88,6 @@ export default {
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 h3 {
   margin: 40px 0 0;
