@@ -16,9 +16,13 @@ app.use(bodyParser.urlencoded({
   extended: false
 }));
 
-app.use(express.static('frontend/dist'))
+app.use(express.static(__dirname + '/frontend/dist'))
 app.get('/', function(req, res) {
-  res.sendFile(__dirname + 'frontend/dist/index.html')
+  res.sendFile(__dirname + '/frontend/dist/index.html')
+});
+app.use((req, res, next) => {
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  next();
 });
 
 app.get('/webscrap/:n_juego', async function(req, res) {
