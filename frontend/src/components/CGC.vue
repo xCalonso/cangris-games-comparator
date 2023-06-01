@@ -98,7 +98,7 @@
             <h2 class="text-h4 font-weight-black" style="color:#4942E4">CGC - Cangris Games Comparator</h2>
             <br>
             <div class="text-h5 font-weight-medium mb-2" style="color:#8696FE">
-              Proyecto realizado por Carlos de Alonso Andrés y Hugo Antonio Teruel
+              Proyecto realizado por Carlos de Alonso Andrés y Hugo Antonio Teruel Muñoz
             </div>
             <br>
             <p class="text-body-2 mb-4">
@@ -116,8 +116,8 @@
 <script>
 import axios from 'axios'
 //const url = 'http://localhost:8080'
-//const url = 'https://cgc-cangris-games-comparator.nw.r.appspot.com'
-const url = 'https://isi-cgc.nw.r.appspot.com'
+const url = 'https://cgc-cangris-games-comparator.nw.r.appspot.com'
+//const url = 'https://isi-cgc.nw.r.appspot.com'
 
 export default {
   name: 'CGC',

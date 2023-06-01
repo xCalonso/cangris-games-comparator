@@ -6,8 +6,8 @@
   "scripts": {
     "postinstall": "node node_modules/puppeteer/install.js",
     "start": "node index.js",
-    "gcp-build": "node node_modules/puppeteer/install.js && cd frontend/ && npm install && npm run build",
-    "build": "cd frontend/ && npm install && npm run build",
+    "gcp-build": "node node_modules/puppeteer/install.js && cd frontend/ && npm install && npm run build && cp favicon.ico dist/",
+    "build": "cd frontend/ && npm install && npm run build && cp favicon.ico dist/",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "engines": {
@@ -23,7 +23,6 @@
     "npm": "^9.6.7",
     "path": "^0.12.7",
     "puppeteer": "^20.4.0",
-    "querystring": "^0.2.1",
     "string-similarity": "^4.0.4"
   }
 }

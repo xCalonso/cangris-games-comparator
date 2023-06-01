@@ -1,5 +1,4 @@
 const stringSimilarity = require('string-similarity');
-const querystring = require('querystring');
 const puppeteer = require('puppeteer');
 const axios = require('axios');
 
@@ -8,15 +7,12 @@ const apiKey = '2A263491854331441324FA092F40370E';
 const webscrapG2A = async (juego) => {
   const browser = await puppeteer.launch({
     headless: "new",
-    ignoreDefaultArgs: ['--disable-extensions'],
     //defaultViewport: null,
     args:[
       '--no-sandbox'
     ]
   });
   
-  const juego_query = querystring.stringify(juego) 
-
   const page = await browser.newPage();
 
   await page.goto(`https://www.g2a.com/es/search?query=${juego}`, {waitUntil: "domcontentloaded"});
@@ -42,23 +38,29 @@ const webscrapIG = async (juego) => {
       '--no-sandbox'
     ]
   });
-  const page = await browser.newPage();
-    
-  await page.goto('https://www.instant-gaming.com/es/', { waitUntil: 'domcontentloaded' });
 
+  const page = await browser.newPage();
+  
+  
+  await page.goto(`https://www.instant-gaming.com/es/busquedas/?query=${juego}`, { waitUntil: 'domcontentloaded' });
+
+  /*
   await page.click('input[class="search-input"]');
   await page.type('input[class="search-input"]', juego);
   await page.waitForNavigation();
-  
+  */ 
+ 
   const nombre = await page.$eval('.text', el => el.textContent);
   const precio = await page.$$eval('.price', el => el[1].textContent.trim());
   const url = await page.$eval('.cover', el=> el.href);
   //const discount = await page.$eval('.discount', el => el.textContent.trim());
 
-  //console.log(`Nombre: ${name}\nPrecio: ${price}\nDescuento: ${discount}`);
+  const scraping = {nombre, precio, url};
+
+  //console.log(scraping);
 
   await browser.close();
-  return {nombre, precio, url};
+  return scraping;
 };
 
 
@@ -115,6 +117,6 @@ const steamAPI = async (nombreJuego) => {
   return{nombre, precio, url, urlImagen};
 }
 
-//console.log(steamAPI("elden ring"))
+//webscrapG2A("elden%20ring")
 
 module.exports = {webscrapG2A, webscrapIG, steamAPI}
