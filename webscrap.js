@@ -4,6 +4,35 @@ const axios = require('axios');
 
 const apiKey = '2A263491854331441324FA092F40370E';
 
+const formatCurrency = (precio) => {
+  console.log(precio)
+  precio = precio.replaceAll(/\,/g, ".")
+  const moneda = precio.replaceAll(/[0-9\.\,]/g, "").trim();
+  const dinero = precio.replaceAll(/[^0-9\.\,]/g, "")
+  
+  const dinero_final = parseFloat(dinero);
+  
+  console.log(moneda)
+  
+  if (moneda === "¥"){
+    const dinero_final = parseFloat(dinero)*0.0067;
+  }
+  else if (moneda === "£"){
+    const dinero_final = parseFloat(dinero)*1.16;
+  }
+  else if (moneda === "CDN$"){
+    const dinero_final = parseFloat(dinero)*0.689;
+  }
+  else if(moneda.includes('₴')){
+    const dinero_final = parseFloat(dinero)*0.025;
+  }
+  
+  const precio_final = dinero_final.toString() + "€" 
+
+  console.log(precio_final)
+  return precio_final;
+}
+
 const webscrapG2A = async (juego) => {
   const browser = await puppeteer.launch({
     headless: "new",
@@ -19,7 +48,9 @@ const webscrapG2A = async (juego) => {
 
   const nombre = await page.$eval('.sc-dFRpbK.jtOUCg a', el => el.textContent);
   const url = await page.$eval('.sc-dFRpbK.jtOUCg a', el => el.href);
-  const precio = await page.$eval('.sc-hBMUJo.bRGwob span', el => el.textContent);
+  const precio_sin = await page.$eval('.sc-hBMUJo.bRGwob span', el => el.textContent);
+  
+  const precio = formatCurrency(precio_sin);
   
   const scraping = {nombre, precio, url};
 
@@ -51,9 +82,10 @@ const webscrapIG = async (juego) => {
   */ 
  
   const nombre = await page.$eval('.text', el => el.textContent);
-  const precio = await page.$$eval('.price', el => el[1].textContent.trim());
+  const precio_sin = await page.$$eval('.price', el => el[1].textContent.trim());
   const url = await page.$eval('.cover', el=> el.href);
-  //const discount = await page.$eval('.discount', el => el.textContent.trim());
+  
+  const precio = formatCurrency(precio_sin);
 
   const scraping = {nombre, precio, url};
 
@@ -105,10 +137,10 @@ const steamAPI = async (nombreJuego) => {
   const urlImagen= datos[gameId].data.header_image.split('?')[0];
   precio = datos[gameId].data.price_overview;
   if(precio==undefined){
-    precio= 'Juego actualmente fuera de Stock';
+    precio = 'Juego actualmente fuera de Stock';
   }
   else{
-    precio = precio.final_formatted;
+    precio = formatCurrency(precio.final_formatted);
   }
   const url = `https://store.steampowered.com/app/${gameId}`;
 
@@ -117,6 +149,7 @@ const steamAPI = async (nombreJuego) => {
   return{nombre, precio, url, urlImagen};
 }
 
-//webscrapG2A("elden%20ring")
+//steamAPI("elden%20ring")
+formatCurrency("899₴")
 
 module.exports = {webscrapG2A, webscrapIG, steamAPI}
