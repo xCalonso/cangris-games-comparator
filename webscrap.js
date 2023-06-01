@@ -5,31 +5,35 @@ const axios = require('axios');
 const apiKey = '2A263491854331441324FA092F40370E';
 
 const formatCurrency = (precio) => {
-  console.log(precio)
+
   precio = precio.replaceAll(/\,/g, ".")
-  const moneda = precio.replaceAll(/[0-9\.\,]/g, "").trim();
-  const dinero = precio.replaceAll(/[^0-9\.\,]/g, "")
+  const moneda = precio.replaceAll(/[0-9\.]/g, "").trim();
+  const dinero = precio.replaceAll(/[^0-9\.]/g, "")
   
-  const dinero_final = parseFloat(dinero);
+  let dinero_final = parseFloat(dinero);
   
-  console.log(moneda)
+  //console.log(moneda)
+  //console.log(parseFloat(dinero))
   
   if (moneda === "¥"){
-    const dinero_final = parseFloat(dinero)*0.0067;
+    dinero_final *= 0.0067;
   }
-  else if (moneda === "£"){
-    const dinero_final = parseFloat(dinero)*1.16;
+  else if(moneda === '₩'){
+    dinero_final *= 0.00071;
+  }
+  else if (moneda === '£'){
+    dinero_final *= 1.16;
   }
   else if (moneda === "CDN$"){
-    const dinero_final = parseFloat(dinero)*0.689;
+    dinero_final *= 0.689;
   }
-  else if(moneda.includes('₴')){
-    const dinero_final = parseFloat(dinero)*0.025;
+  else if(moneda === '₴'){
+    dinero_final *= 0.025;
   }
   
-  const precio_final = dinero_final.toString() + "€" 
+  const precio_final = dinero_final.toFixed(2) + "€" 
 
-  console.log(precio_final)
+  //console.log(precio_final)
   return precio_final;
 }
 
@@ -150,6 +154,6 @@ const steamAPI = async (nombreJuego) => {
 }
 
 //steamAPI("elden%20ring")
-formatCurrency("899₴")
+//formatCurrency("£49")
 
 module.exports = {webscrapG2A, webscrapIG, steamAPI}
