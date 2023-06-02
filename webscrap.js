@@ -42,7 +42,8 @@ const webscrapG2A = async (juego) => {
     headless: "new",
     //defaultViewport: null,
     args:[
-      '--no-sandbox'
+      '--no-sandbox',
+      '--incognito'
     ]
   });
   
@@ -70,7 +71,8 @@ const webscrapIG = async (juego) => {
     ignoreDefaultArgs: ['--disable-extensions'],
     //defaultViewport: null,
     args:[
-      '--no-sandbox'
+      '--no-sandbox',
+      '--incognito'
     ]
   });
 
@@ -141,7 +143,7 @@ const steamAPI = async (nombreJuego) => {
   const urlImagen= datos[gameId].data.header_image.split('?')[0];
   precio = datos[gameId].data.price_overview;
   if(precio==undefined){
-    precio = 'Juego actualmente fuera de Stock';
+    precio = 'Free2Play';
   }
   else{
     precio = formatCurrency(precio.final_formatted);
