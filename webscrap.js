@@ -8,12 +8,15 @@ const formatCurrency = (precio) => {
 
   precio = precio.replaceAll(/\,/g, ".")
   const moneda = precio.replaceAll(/[0-9\.]/g, "").trim();
-  const dinero = precio.replaceAll(/[^0-9\.]/g, "")
+  let dinero = precio.replaceAll(/[^0-9\.]/g, "")
+  
+  if (moneda === '₩'){
+    dinero = dinero.replaceAll(/[\.]/g, "")
+  }
   
   let dinero_final = parseFloat(dinero);
-  
   //console.log(moneda)
-  //console.log(parseFloat(dinero))
+  //console.log(dinero)
   
   if (moneda === "¥"){
     dinero_final *= 0.0067;
@@ -142,6 +145,7 @@ const steamAPI = async (nombreJuego) => {
   const nombre= datos[gameId].data.name;
   const urlImagen= datos[gameId].data.header_image.split('?')[0];
   precio = datos[gameId].data.price_overview;
+  //console.log(precio);
   if(precio==undefined){
     precio = 'Free2Play';
   }
